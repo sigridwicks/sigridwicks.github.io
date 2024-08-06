@@ -1,0 +1,440 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OS_lab4 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="思考题Thinking 4.1思考并回答下面的问题：   内核在保存现场的时候是如何避免破坏通用寄存器的？  内核通过在kern&#x2F;entry.S中调用SAVE_ALL来保存现场，SAVE_ALL的实现在include&#x2F;stackframe.h中，具体实现如下 123456789101112131415161718192021222324252627282930313233343">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_lab4">
+<meta property="og:url" content="http://example.com/2024/08/06/OS-lab4/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="思考题Thinking 4.1思考并回答下面的问题：   内核在保存现场的时候是如何避免破坏通用寄存器的？  内核通过在kern&#x2F;entry.S中调用SAVE_ALL来保存现场，SAVE_ALL的实现在include&#x2F;stackframe.h中，具体实现如下 123456789101112131415161718192021222324252627282930313233343">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-08-06T07:26:48.000Z">
+<meta property="article:modified_time" content="2024-08-06T07:28:51.488Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/08/06/OS-lab4/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OS_lab4',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-06 15:28:51'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OS_lab4</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-08-06T07:26:48.000Z" title="Created 2024-08-06 15:26:48">2024-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-06T07:28:51.488Z" title="Updated 2024-08-06 15:28:51">2024-08-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OS_lab4"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="Thinking-4-1"><a href="#Thinking-4-1" class="headerlink" title="Thinking 4.1"></a>Thinking 4.1</h2><p>思考并回答下面的问题： </p>
+<blockquote>
+<p>内核在保存现场的时候是如何避免破坏通用寄存器的？</p>
+</blockquote>
+<p>内核通过在kern&#x2F;entry.S中调用SAVE_ALL来保存现场，SAVE_ALL的实现在include&#x2F;stackframe.h中，具体实现如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">.macro SAVE_ALL</span><br><span class="line">.set noat</span><br><span class="line">.set noreorder</span><br><span class="line">	mfc0    k0, CP0_STATUS</span><br><span class="line">	andi    k0, STATUS_UM</span><br><span class="line">	beqz    k0, 1f</span><br><span class="line">	move    k0, sp //将用户栈指针存入k0</span><br><span class="line">	li      sp, KSTACKTOP //sp指向内核处理栈</span><br><span class="line">1:</span><br><span class="line">	subu    sp, sp, TF_SIZE // 处理栈指针下压TF_SIZE</span><br><span class="line">	sw      k0, TF_REG29(sp) // 将用户栈指针存入内核栈TF_REG29处</span><br><span class="line">	// 借助k0将CP0寄存器和HI、LO寄存器存入内核栈</span><br><span class="line">	mfc0    k0, CP0_STATUS</span><br><span class="line">	sw      k0, TF_STATUS(sp)</span><br><span class="line">	mfc0    k0, CP0_CAUSE</span><br><span class="line">	sw      k0, TF_CAUSE(sp)</span><br><span class="line">	mfc0    k0, CP0_EPC</span><br><span class="line">	sw      k0, TF_EPC(sp)</span><br><span class="line">	mfc0    k0, CP0_BADVADDR</span><br><span class="line">	sw      k0, TF_BADVADDR(sp)</span><br><span class="line">	mfhi    k0</span><br><span class="line">	sw      k0, TF_HI(sp)</span><br><span class="line">	mflo    k0</span><br><span class="line">	sw      k0, TF_LO(sp)</span><br><span class="line">	// 下面逐个把用户态的寄存器保存在内核栈中</span><br><span class="line">	sw      $0, TF_REG0(sp)</span><br><span class="line">	sw      $1, TF_REG1(sp)</span><br><span class="line">	sw      $2, TF_REG2(sp)</span><br><span class="line">	…………</span><br><span class="line">	sw      $28, TF_REG28(sp)</span><br><span class="line">	sw      $30, TF_REG30(sp) //注：跳过29，因为前面已经保存过了</span><br><span class="line">	sw      $31, TF_REG31(sp)</span><br><span class="line">.set at</span><br><span class="line">.set reorder</span><br><span class="line">.endm</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，内核在保存现场的过程中只更改了k0寄存器，用于暂存用户栈指针sp、CP0寄存器和HI、LO寄存器的值；而k0在MIPS中用于存储临时变量，一般不会在k0中保存需要留存的数值，因此k0可以随意更改。这样，内核就避免了破坏通用寄存器。</p>
+<blockquote>
+<p>系统陷入内核调用后可以直接从当时的 $a0-$a3 参数寄存器中得到用户调用 msyscall 留下的信息吗？</p>
+</blockquote>
+<p>可以，因为a1-a3寄存器的值都没有改变；对于a0寄存器，虽然在handle_sys中被修改为sys_*函数的地址，但是在sys_*中不再使用。</p>
+<blockquote>
+<p>我们是怎么做到让 sys 开头的函数“认为”我们提供了和用户调用 msyscall 时同样的参数的？</p>
+</blockquote>
+<p>在do_syscall中，从内核栈中保存的用户态现场获取了用户调用的参数，并传递给系统调用sys_*</p>
+<blockquote>
+<p>内核处理系统调用的过程对 Trapframe 做了哪些更改？这种修改对应的用户态的变化是什么？</p>
+</blockquote>
+<p>在do_syscall中</p>
+<ul>
+<li><code>tf-&gt;cp0_epc += 4</code>，修改了epc</li>
+<li><code>tf-&gt;regs[2] = func(arg1, arg2, arg3, arg4, arg5)</code>修改了v0寄存器</li>
+</ul>
+<p>在用户态中，从系统调用返回之后可以获得正确的返回值（在v0中），并从系统调用的下一条指令继续执行</p>
+<h2 id="Thinking-4-2"><a href="#Thinking-4-2" class="headerlink" title="Thinking 4.2"></a>Thinking 4.2</h2><blockquote>
+<p> 思考 envid2env 函数: 为什么 envid2env 中需要判断 e-&gt;env_id !&#x3D; envid 的情况？如果没有这步判断会发生什么情况？ </p>
+</blockquote>
+<p>实际上考虑了这样一种情况，某一进程完成运行，资源被回收，这时其对应的进程控制块会插入回 <code>env_free_list</code> 中。当我们需要再次创建内存时，就可能重新取得该进程控制块，并为其赋予不同的 envid。这时，已销毁进程的 envid 和新创建进程的 envid 都能通过 <code>ENVX</code> 宏取得相同的值，对应了同一个进程控制块。可是已销毁进程的 envid 却不应当再次出现，<code>e-&gt;env_id != envid</code> 就处理了 <code>envid</code> 属于已销毁进程的情况。</p>
+<h2 id="Thinking-4-3"><a href="#Thinking-4-3" class="headerlink" title="Thinking 4.3"></a>Thinking 4.3</h2><blockquote>
+<p>思考下面的问题，并对这个问题谈谈你的理解：请回顾 kern&#x2F;env.c 文件 中 mkenvid() 函数的实现，该函数不会返回 0，请结合系统调用和 IPC 部分的实现与 envid2env() 函数的行为进行解释。 </p>
+</blockquote>
+<p>首先回顾宏定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define LOG2NENV 10</span><br></pre></td></tr></table></figure>
+
+<h3 id="mkenvid的实现"><a href="#mkenvid的实现" class="headerlink" title="mkenvid的实现"></a>mkenvid的实现</h3><p>e的下标（十位）（e - envs）的最左侧添加一位设置为1，因此mkenvid得到的id不会是0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">u_int mkenvid(struct Env *e) &#123;</span><br><span class="line">	static u_int i = 0;</span><br><span class="line">	return ((++i) &lt;&lt; (1 + LOG2NENV)) | (e - envs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="envid2env部分"><a href="#envid2env部分" class="headerlink" title="envid2env部分"></a>envid2env部分</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (envid == 0) &#123;</span><br><span class="line">	*penv = curenv;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据特判可知，envid &#x3D; 0对应的env控制块是指当前进程；从这个角度，envid &#x3D; 0 用于获取当前进程的进程控制块，而envid又是唯一的，于是进程的envid不能是0</p>
+<h3 id="IPC部分"><a href="#IPC部分" class="headerlink" title="IPC部分"></a>IPC部分</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e-&gt;env_tf.regs[2] = 0;</span><br></pre></td></tr></table></figure>
+
+<p>envid为0是MOS修改了⼦进程的函数返回值，⽤于&#x3D;&#x3D;区分⽗⼦进程&#x3D;&#x3D;。MOS希望系统调⽤在内核态返回的 envid 只传递给⽗进 程，对于⼦进程则需要对它的保存的现场Trapframe进⾏⼀个修改，从⽽在恢复现场时⽤ 0 覆盖系统 调⽤原来的返回值。</p>
+<p>指导书中提到：“……在我们的用户程序中，会大量使用 srcva 为 0 的调用来表示只传 value 值，而不需要传递物理页面，换句话说，当 srcva 不为 0 时，我们才建立两个进程的页面映射关系。”</p>
+<p>从ipc的角度，envid也不能设置为0。</p>
+<h2 id="Thinking-4-4"><a href="#Thinking-4-4" class="headerlink" title="Thinking 4.4"></a>Thinking 4.4</h2><blockquote>
+<p> 关于 fork 函数的两个返回值，下面说法正确的是： </p>
+<p> A、fork 在父进程中被调用两次，产生两个返回值 </p>
+<p> B、fork 在两个进程中分别被调用一次，产生两个不同的返回值 </p>
+<p> C、fork 只在父进程中被调用了一次，在两个进程中各产生一个返回值 </p>
+<p> D、fork 只在子进程中被调用了一次，在两个进程中各产生一个返回值 </p>
+</blockquote>
+<p>C，一次调用指的是只有父进程调用了 <code>syscall_exofork</code>，两次返回分别是父进程调用 <code>syscall_exofork</code> 得到的返回值和被创建的子进程中设定了 <code>v0</code> 寄存器的值为 0 作为返回值。这样当子进程开始运行时，就会拥有一个和父进程不同的返回值。</p>
+<h2 id="Thinking-4-5"><a href="#Thinking-4-5" class="headerlink" title="Thinking 4.5"></a>Thinking 4.5</h2><blockquote>
+<p>我们并不应该对所有的用户空间页都使用 duppage 进行映射。那么究竟哪些用户空间页应该映射，哪些不应该呢？请结合 kern&#x2F;env.c 中 env_init 函数进行的页面映射、include&#x2F;mmu.h 里的内存布局图以及本章的后续描述进行思考。 </p>
+</blockquote>
+<p>![image-20240515212241913](C:\Users\86199\Documents\A blog\myblog\source_posts\image-20240515212241913.png)</p>
+<p>在 0 ~ USTACKTOP 范围的内存需要使用 duppage 进行映射;</p>
+<p>USTACKTOP 到 UTOP 之间的 user exception stack 是用来进行页写入异常的，不会在处理COW异常时调用 fork() ,所以 user exception stack 这一页不需要共享；</p>
+<p>USTACKTOP 到 UTOP 之间的 invalid memory 是为处理页写入异常时做缓冲区用的，所以同理也不需要共享；</p>
+<p>UTOP以上页面的内存与页表是所有进程共享的，且用户进程无权限访问，不需要做父子进程间的duppage；</p>
+<p>其上范围的内存要么属于内核，要么是所有用户进程共享的空间，用户模式下只可以读取。除只读、共享的页面外都需要设置 PTE_COW 进行保护。</p>
+<p>fork中进行的映射：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for (i = 0; i &lt; VPN(USTACKTOP); i++) &#123;</span><br><span class="line">	if ((vpd[i &gt;&gt; 10] &amp; PTE_V) &amp;&amp; (vpt[i] &amp; PTE_V)) &#123;</span><br><span class="line">		duppage(child, i);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>tips：为什么不需要把父进程的页表dup给子进程？</p>
+<p>答：在父进程向子进程duppage的过程中，每映射一个页面就会填写一个页表项，子进程的页表逐个完成了填写（在下文sys_mem_map函数的讲解中有实现细节），也就不需要在duppage的时候把父进程页表dup给子进程了</p>
+<h2 id="Thinking-4-6"><a href="#Thinking-4-6" class="headerlink" title="Thinking 4.6"></a>Thinking 4.6</h2><p>在遍历地址空间存取页表项时你需要使用到 vpd 和 vpt 这两个指针，请参 考 user&#x2F;include&#x2F;lib.h 中的相关定义，思考并回答这几个问题：</p>
+<blockquote>
+<p>vpt 和 vpd 的作用是什么？怎样使用它们？</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define vpt ((const volatile Pte *)UVPT)</span><br><span class="line">#define vpd ((const volatile Pde *)(UVPT + (PDX(UVPT) &lt;&lt; PGSHIFT)))</span><br></pre></td></tr></table></figure>
+
+<p>从定义可以看出，vpt和vpd指出了页表和页目录在虚拟内存中的首地址；在使用时，可以将vpt和vpd作为数组使用，认为vpt和vpd分别存储了页表和页目录，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vpt[vpn] // 取出页号为vpn的页表项</span><br><span class="line">perm = vpt[vpn] &amp; 0xfff // 取页表项低12位权限位</span><br><span class="line">vpd[vpn &gt;&gt; 10]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>从实现的角度谈一下为什么进程能够通过这种方式来存取自身的页表？</p>
+</blockquote>
+<p>从内存分布图中，我们可以看到UVPT是进程页表的起始地址，那么作为类型为Pte *的vpt，实际上可以表示整个进程页表的第一个二级页表的第一个页表项，也就是页表的起始地址；在c语言中，数组名称其实就是数组首地址，指向数组的第一个元素，因此可以通过数组的形式存取页表</p>
+<p>并且对于Pte *指针（也就是u_int *指针），指针 + 1 实际上步长是32，因此虽然页号vpn是以1为单位增长，而页表项地址是以 32bits为单位增长，实际上的 vpt[vpn]也能取到对应的页表项</p>
+<blockquote>
+<p>它们是如何体现自映射设计的？</p>
+</blockquote>
+<p>在vpd的定义中体现了自映射设计</p>
+<p>#define vpd ((const volatile Pde *)(UVPT + (PDX(UVPT) &lt;&lt; PGSHIFT)))</p>
+<p>实际上就是PD_base &#x3D; PT_base + (PT_base &gt;&gt; 22) &lt;&lt; 12 &#x3D; PT_base + PT_base &lt;&lt; 10</p>
+<blockquote>
+<p>进程能够通过这种方式来修改自己的页表项吗？</p>
+</blockquote>
+<p>可以，因为页表项的权限是可写</p>
+<h2 id="Thinking-4-7"><a href="#Thinking-4-7" class="headerlink" title="Thinking 4.7"></a>Thinking 4.7</h2><p>在 do_tlb_mod 函数中，你可能注意到了一个向异常处理栈复制 Trapframe 运行现场的过程，请思考并回答这几个问题：</p>
+<blockquote>
+<p>这里实现了一个支持类似于“异常重入”的机制，而在什么时候会出现这种“异常重入”？</p>
+</blockquote>
+<p>在⽤⼾发⽣写时复制引发的缺⻚中断并进⾏处理时，可能会再次发⽣缺⻚中断，从⽽“中断重⼊”。</p>
+<blockquote>
+<p> 内核为什么需要将异常的现场 Trapframe 复制到用户空间？</p>
+</blockquote>
+<p>我们在⽤⼾进程处理此缺⻚中断，因此⽤⼾进程需要读取Trapframe中的值；同时⽤⼾进程在中断结束恢复现 场时也需要⽤到Trapframe中数据，因此存到⽤⼾空间。</p>
+<h2 id="Thinking-4-8"><a href="#Thinking-4-8" class="headerlink" title="Thinking 4.8"></a>Thinking 4.8</h2><blockquote>
+<p>在用户态处理页写入异常，相比于在内核态处理有什么优势？</p>
+</blockquote>
+<p>符合微内核的设计理念，能够精简系统</p>
+<h2 id="Thinking-4-9"><a href="#Thinking-4-9" class="headerlink" title="Thinking 4.9"></a>Thinking 4.9</h2><blockquote>
+<p>为什么需要将 syscall_set_tlb_mod_entry 的调用放置在 syscall_exofork 之前？</p>
+</blockquote>
+<p>避免子进程在被设置为runnable之后重复执行syscall_set_tlb_mod_entry。实际上，syscall_exofork中并不涉及对cow页面的写入，也不会触发页写入异常，如果交换syscall_set_tlb_mod_entry 与syscall_exofork两者的位置，运行也不会出现问题。</p>
+<p>以下是助教在讨论区的回答：</p>
+<p>“第一次 <code>syscall_set_tlb_mod_entry</code> 是针对父进程设置的。子进程 <code>RUNNABLE</code> 后会从 <code>syscall_exo_fork</code> 逐级调用的 <code>syscall</code> 指令之后开始执行。如果在 <code>syscall_exo_fork</code> 之后再 <code>syscall_set_tlb_mod_entry</code>，那么子进程也会执行这个系统调用。之所以这样也能正确工作，是因为在子进程 <code>RUNNABLE</code> 之前父进程已经设置了子进程的 <code>tlb_mod_entry</code>。”</p>
+<blockquote>
+<p>如果放置在写时复制保护机制完成之后会有怎样的效果？</p>
+</blockquote>
+<p>父进程运行时在函数调用等情形下会修改栈。在栈空间的页面标记为写时复制之后，父进程继续运行并修改栈，就会触发 TLB Mod 异常。所以在写时复制保护机制完成之前就需要 <code>syscall_set_tlb_mod_entry</code>。</p>
+<h1 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h1><h2 id="异常处理栈？-Trapframe？"><a href="#异常处理栈？-Trapframe？" class="headerlink" title="异常处理栈？ Trapframe？"></a>异常处理栈？ Trapframe？</h2><p>Trapframe在KSTACKTOP下，用于保存进程上下文</p>
+<p>异常处理栈在UXSTACKTOP</p>
+<h2 id="系统调用机制"><a href="#系统调用机制" class="headerlink" title="系统调用机制"></a>系统调用机制</h2><p>![image-20240508134439019](C:\Users\86199\Documents\A blog\myblog\source_posts\image-20240508134439019.png)</p>
+<h3 id="系统调用流程"><a href="#系统调用流程" class="headerlink" title="系统调用流程"></a>系统调用流程</h3><ul>
+<li><p>用户空间：</p>
+<ul>
+<li>调用syscall_*</li>
+<li>syscall_* 调用msyscall</li>
+<li>msyscall调用syscall陷入内核并返回</li>
+</ul>
+</li>
+<li><p>内核空间：</p>
+<ul>
+<li>处理器跳转到异常分发代码处</li>
+<li>根据 cause 寄存器值判断异常类型为系统调用，跳转到handle_sys</li>
+<li>handle_sys调用对应的异常处理函数do_syscall</li>
+<li>do_syscall<ul>
+<li>获取用户空间传递的参数</li>
+<li>通过第一个参数——系统调用号，找到对应的系统调用 sys_*</li>
+<li>执行 sys_* 并返回</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="msyscall-时发生了什么"><a href="#msyscall-时发生了什么" class="headerlink" title="msyscall 时发生了什么"></a>msyscall 时发生了什么</h3><ul>
+<li>参数是什么</li>
+</ul>
+<p>msyscall 一共有 6 个参数，第一个参数都是一个与调用名相似的宏（如 SYS_print_cons），称为&#x3D;&#x3D;系统调用号&#x3D;&#x3D;</p>
+<ul>
+<li>参数如何传递：栈帧</li>
+</ul>
+<blockquote>
+<p>MIPS 寄存器使用规范中指出，寄存器 $a0-$a3 用于存放函数调用的前四个参数 （但在栈中仍然需要为其预留空间），剩余的参数仅存放在栈中</p>
+</blockquote>
+<p>msyscall 前 4 个参数会被 syscall_* 的函数分别存入 $a0-$a3 寄存器 （寄存器传参的部分）同时栈帧底部保留 16 字节的空间（不要求存入参数的值）</p>
+<p>后 2 个参数只会被存入在预留空间之上的 8 字节空间内（没有寄存器传参），于是总共 24 字节的空间用于参数传递</p>
+<blockquote>
+<p>需要注意的是，陷入内核态的操作并不是从一个函数跳转到了另一个函数，代码使用的栈指 针 $sp 是内核空间中的栈指针。</p>
+<p>系统从用户态切换到内核态后：</p>
+<ul>
+<li>内核首先需要将原用户进程的运行现场保存到内核空间（在 kern&#x2F;entry.S 中通过 SAVE_ALL 宏完成）</li>
+<li>随后的栈指针则指向保存的 Trapframe，因此我们正是借助这个保存的结构体来获取用户态中传递过来的值</li>
+</ul>
+</blockquote>
+<ul>
+<li>sp是什么</li>
+</ul>
+<p>栈底（？）指针，值存储在29号寄存器中。在regdef中有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define sp $29 /* stack pointer */</span><br></pre></td></tr></table></figure>
+
+<h3 id="syscall-之后发生了什么"><a href="#syscall-之后发生了什么" class="headerlink" title="syscall 之后发生了什么"></a>syscall 之后发生了什么</h3><p>执行自陷指令 syscall 陷入内核态后，处理器将 PC 寄存器指向一个内核中固定的异常处理入口；在异常向量表中，系统调用这一异常类型的处理入口为 handle_sys 函数，它是在 kern&#x2F;genex.S 中定义的对 do_syscall 函数的包装</p>
+<p>kern&#x2F;genex.S中，BUILD_HANDLER函数实现了对一系列异常处理的包装：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.macro BUILD_HANDLER exception handler</span><br><span class="line">	NESTED(handle_\exception, TF_SIZE + 8, zero)</span><br><span class="line">		…… //执行\handler函数并返回</span><br><span class="line">	END(handle_\exception)</span><br><span class="line">.endm</span><br></pre></td></tr></table></figure>
+
+<p>具体实现了handle_tlb、handle_mod、handle_sys、handle_reserved函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">BUILD_HANDLER tlb do_tlb_refill</span><br><span class="line">BUILD_HANDLER mod do_tlb_mod</span><br><span class="line">BUILD_HANDLER sys do_syscall</span><br><span class="line">BUILD_HANDLER reserved do_reserved</span><br></pre></td></tr></table></figure>
+
+<p>因此，syscall之后发生了：syscall -&gt; handle_sys -&gt; do_syscall -&gt; sys_*</p>
+<h2 id="进程通信机制IPC"><a href="#进程通信机制IPC" class="headerlink" title="进程通信机制IPC"></a>进程通信机制IPC</h2><p>借助进程之间共享的内核空间 kseg0来传递信息：以系统调用的形式在进程控制块中存取数据</p>
+<blockquote>
+<p>在我们的用户程序中，会大量使用 srcva 为 0 的调用来表示只传 value 值，而不需要传递物理页面，换句话说，当 srcva 不为 0 时，我们才建立两个进程的 页面映射关系</p>
+</blockquote>
+<h1 id="文件整理"><a href="#文件整理" class="headerlink" title="文件整理"></a>文件整理</h1><h2 id="用户态-user"><a href="#用户态-user" class="headerlink" title="用户态 user"></a>用户态 user</h2><h3 id="user-lib-syscall-wrap-S"><a href="#user-lib-syscall-wrap-S" class="headerlink" title="user&#x2F;lib&#x2F;syscall_wrap.S"></a>user&#x2F;lib&#x2F;syscall_wrap.S</h3><p>实现msyscall：调用syscall并返回</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LEAF(msyscall)</span><br><span class="line">	syscall</span><br><span class="line">	jr ra</span><br><span class="line">END(msyscall)</span><br></pre></td></tr></table></figure>
+
+<h3 id="user-lib-syscall-lib-c"><a href="#user-lib-syscall-lib-c" class="headerlink" title="user&#x2F;lib&#x2F;syscall_lib.c"></a>user&#x2F;lib&#x2F;syscall_lib.c</h3><ul>
+<li>syscall_getenvid<ul>
+<li>return msyscall (SYS_getenvid)</li>
+</ul>
+</li>
+<li>syscall_yield<ul>
+<li>msyscall (SYS_yield)</li>
+</ul>
+</li>
+<li>syscall_mem_map<ul>
+<li>return msyscall (SYS_mem_map, srcid, srcva, dstid, dstva, perm)</li>
+</ul>
+</li>
+<li>……</li>
+</ul>
+<h3 id="user-lib-ipc-c"><a href="#user-lib-ipc-c" class="headerlink" title="user&#x2F;lib.ipc.c"></a>user&#x2F;lib.ipc.c</h3><ul>
+<li>ipc_recv<ul>
+<li>syscall_ipcrecv</li>
+</ul>
+</li>
+<li>ipc_send<ul>
+<li>syscall_ipc_try_send</li>
+<li>syscall_yield</li>
+</ul>
+</li>
+</ul>
+<h3 id="user-lib-fork-c"><a href="#user-lib-fork-c" class="headerlink" title="user&#x2F;lib&#x2F;fork.c"></a>user&#x2F;lib&#x2F;fork.c</h3><ul>
+<li>cow_entry<ul>
+<li>syscall_mem_alloc</li>
+<li>memcpy</li>
+<li>syscall_mem_map</li>
+<li>syscall_mem_enmap</li>
+<li>syscall_set_trapframe 恢复进程现场</li>
+</ul>
+</li>
+<li>duppage</li>
+<li>fork</li>
+</ul>
+<h2 id="内核-kern"><a href="#内核-kern" class="headerlink" title="内核 kern"></a>内核 kern</h2><h3 id="kern-tlbex-c"><a href="#kern-tlbex-c" class="headerlink" title="kern&#x2F;tlbex.c"></a>kern&#x2F;tlbex.c</h3><ul>
+<li>do_tlb_mod<ul>
+<li>page_lookup</li>
+</ul>
+</li>
+</ul>
+<h1 id="函数整理"><a href="#函数整理" class="headerlink" title="函数整理"></a>函数整理</h1><h3 id="SAVE-ALL"><a href="#SAVE-ALL" class="headerlink" title="SAVE_ALL"></a>SAVE_ALL</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">.macro SAVE_ALL</span><br><span class="line">.set noat</span><br><span class="line">.set noreorder</span><br><span class="line">	mfc0    k0, CP0_STATUS</span><br><span class="line">	andi    k0, STATUS_UM</span><br><span class="line">	beqz    k0, 1f</span><br><span class="line">	move    k0, sp //将用户栈指针存入k0</span><br><span class="line">	li      sp, KSTACKTOP //sp指向内核处理栈</span><br><span class="line">1:</span><br><span class="line">	subu    sp, sp, TF_SIZE // 处理栈指针下压TF_SIZE</span><br><span class="line">	sw      k0, TF_REG29(sp) // 将用户栈指针存入内核栈TF_REG29处</span><br><span class="line">	// 借助k0将CP0寄存器和HI、LO寄存器存入内核栈</span><br><span class="line">	mfc0    k0, CP0_STATUS</span><br><span class="line">	sw      k0, TF_STATUS(sp)</span><br><span class="line">	mfc0    k0, CP0_CAUSE</span><br><span class="line">	sw      k0, TF_CAUSE(sp)</span><br><span class="line">	mfc0    k0, CP0_EPC</span><br><span class="line">	sw      k0, TF_EPC(sp)</span><br><span class="line">	mfc0    k0, CP0_BADVADDR</span><br><span class="line">	sw      k0, TF_BADVADDR(sp)</span><br><span class="line">	mfhi    k0</span><br><span class="line">	sw      k0, TF_HI(sp)</span><br><span class="line">	mflo    k0</span><br><span class="line">	sw      k0, TF_LO(sp)</span><br><span class="line">	// 下面逐个把用户态的通用寄存器保存在内核栈中</span><br><span class="line">	sw      $0, TF_REG0(sp)</span><br><span class="line">	sw      $1, TF_REG1(sp)</span><br><span class="line">	sw      $2, TF_REG2(sp)</span><br><span class="line">	…………</span><br><span class="line">	sw      $28, TF_REG28(sp)</span><br><span class="line">	sw      $30, TF_REG30(sp) //注：跳过29，因为前面已经保存过了</span><br><span class="line">	sw      $31, TF_REG31(sp)</span><br><span class="line">.set at</span><br><span class="line">.set reorder</span><br><span class="line">.endm</span><br></pre></td></tr></table></figure>
+
+<h3 id="do-syscall"><a href="#do-syscall" class="headerlink" title="do_syscall"></a>do_syscall</h3><ul>
+<li><p>epc + 4</p>
+</li>
+<li><p>从栈帧取用户态传递到内核的六个参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">int sysno = tf-&gt;regs[4]; //a0 系统调用号</span><br><span class="line">……</span><br><span class="line">u_int arg1 = tf-&gt;regs[5]; //a1</span><br><span class="line">u_int arg2 = tf-&gt;regs[6];</span><br><span class="line">u_int arg3 = tf-&gt;regs[7];</span><br><span class="line">……</span><br><span class="line">arg4 = *(u_int *)(tf-&gt;regs[29] + 16);</span><br><span class="line">arg5 = *(u_int *)(tf-&gt;regs[29] + 20);</span><br><span class="line">// tf-&gt;regs[29]是用户态栈指针</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用第一个参数确定要执行的函数名 sys_*</p>
+</li>
+<li><p>调用sys_*</p>
+</li>
+</ul>
+<blockquote>
+<p>回顾Lab3：env_tf.cp0_epc 字段指示了进程恢复运行时 PC 应恢复到的位置</p>
+</blockquote>
+<h3 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h3><ul>
+<li>设置父进程cow异常处理函数入口 <code>syscall_set_tlb_mod_entry(0, cow_entry)</code></li>
+<li>syscall_exofork创建child</li>
+<li>duppage完成向子进程的内存映射</li>
+<li>设置子进程cow异常处理函数入口</li>
+<li>设置子进程status为runnable</li>
+</ul>
+<h3 id="sys-mem-alloc"><a href="#sys-mem-alloc" class="headerlink" title="sys_mem_alloc"></a>sys_mem_alloc</h3><p>作用：分配内存。用户程序可以通过这个系统调用，给该程序所允许的虚拟内存空间，显式地分配实际的物理内存。</p>
+<h3 id="envid2env"><a href="#envid2env" class="headerlink" title="envid2env"></a>envid2env</h3><ul>
+<li>声明：int envid2env(u_int envid, struct Env **penv, int checkperm)</li>
+<li>作用：利用envid找到对应的控制块env</li>
+<li>调用：</li>
+<li>解读：</li>
+</ul>
+<p>首先回顾几个宏定义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define LOG2NENV 10</span><br><span class="line">#define NENV (1 &lt;&lt; LOG2NENV) // 1024</span><br></pre></td></tr></table></figure>
+
+<p>mkenvid：e的下标（十位）（e - envs）的最左侧添加一位设置为1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">u_int mkenvid(struct Env *e) &#123;</span><br><span class="line">	static u_int i = 0;</span><br><span class="line">	return ((++i) &lt;&lt; (1 + LOG2NENV)) | (e - envs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因此：ENVX实际上是取envid的低10位</p>
+<blockquote>
+<p>#define ENVX(envid) ((envid) &amp; (NENV - 1)) 用于寻找该envid在envs数组中的下标</p>
+</blockquote>
+<h3 id="duppage"><a href="#duppage" class="headerlink" title="duppage"></a>duppage</h3><p>作用：父进程对子进程页面空间进行映射并标记 COW</p>
+<p>代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static void duppage(u_int envid, u_int vpn) &#123;</span><br><span class="line">	int r;</span><br><span class="line">	u_int addr;</span><br><span class="line">	u_int perm;</span><br><span class="line"></span><br><span class="line">	addr = vpn &lt;&lt; PGSHIFT; // 获取该页框的虚拟地址</span><br><span class="line">	perm = vpt[vpn] &amp; 0xfff; // 获取权限位</span><br><span class="line"></span><br><span class="line">	int flag = 0;</span><br><span class="line">	if ((perm &amp; PTE_D) &amp;&amp; !(perm &amp; PTE_LIBRARY)) &#123;</span><br><span class="line">		perm = (perm &amp; ~ PTE_D) | PTE_COW; // 取消可写，设置COW</span><br><span class="line">		flag = 1;</span><br><span class="line">	&#125;</span><br><span class="line">	// 映射到子进程</span><br><span class="line">	syscall_mem_map(0, addr, envid, addr, perm);</span><br><span class="line">	</span><br><span class="line">	// 如果COW，再映射到父进程</span><br><span class="line">	if (flag) &#123;</span><br><span class="line">		syscall_mem_map(0, addr, 0,addr, perm);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="sys-mem-map"><a href="#sys-mem-map" class="headerlink" title="sys_mem_map"></a>sys_mem_map</h3><ul>
+<li><p>检查地址合法性</p>
+</li>
+<li><p>取env块</p>
+</li>
+<li><p>page_lookup取srcva的物理页pp</p>
+</li>
+<li><p>page_insert完成pp到子进程dstva的映射</p>
+<blockquote>
+<p>注：回顾page_insert的执行逻辑，会利用<code>pgdir_walk(pgdir, va, 0, &amp;pte);</code>先查找srcva是否已经有映射，如果没有则<code>tlb_incalidate</code>后再进行一次pgdir_walk，不过这次create位为1，在此时会使用page_alloc函数分配一页物理内存用于存放二级页表，pp_ref++后重新填写页表项<code>*pgdir_entryp = page2pa(pp) | PTE_C_CACHEABLE | PTE_V;</code></p>
+<p>因此，在父进程向子进程duppage的过程中，每映射一个页面就会填写一个页表项，子进程的页表逐个完成了填写，也就不需要在duppage的时候把父进程页表dup给子进程了</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="type">int</span> var= <span class="number">1</span>;</span><br><span class="line">	<span class="type">long</span> pid;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Beforefork,var=%d.\n&quot;</span>, var);</span><br><span class="line">	pid = fork();</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Afterfork, var=%d.\n&quot;</span>,var);</span><br><span class="line">	<span class="keyword">if</span>(pid ==<span class="number">0</span>)&#123;</span><br><span class="line">		var =<span class="number">2</span>;</span><br><span class="line">		sleep(<span class="number">3</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;childgot%ld,var=%d&quot;</span>, pid, var);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		sleep(<span class="number">2</span>);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;parentgot%ld,var= %d&quot;</span>, pid,var);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;,pid:%ld\n&quot;</span>,(<span class="type">long</span>) getpid());</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/08/06/OS-lab4/">http://example.com/2024/08/06/OS-lab4/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/08/06/OS-lab5/" title="OS_lab5"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">OS_lab5</div></div></a></div><div class="next-post pull-right"><a href="/2024/08/06/OS-lab3/" title="OS_lab3"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">OS_lab3</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-1"><span class="toc-number">1.1.</span> <span class="toc-text">Thinking 4.1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-2"><span class="toc-number">1.2.</span> <span class="toc-text">Thinking 4.2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-3"><span class="toc-number">1.3.</span> <span class="toc-text">Thinking 4.3</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mkenvid%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.1.</span> <span class="toc-text">mkenvid的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#envid2env%E9%83%A8%E5%88%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">envid2env部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IPC%E9%83%A8%E5%88%86"><span class="toc-number">1.3.3.</span> <span class="toc-text">IPC部分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-4"><span class="toc-number">1.4.</span> <span class="toc-text">Thinking 4.4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-5"><span class="toc-number">1.5.</span> <span class="toc-text">Thinking 4.5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-6"><span class="toc-number">1.6.</span> <span class="toc-text">Thinking 4.6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-7"><span class="toc-number">1.7.</span> <span class="toc-text">Thinking 4.7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-8"><span class="toc-number">1.8.</span> <span class="toc-text">Thinking 4.8</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-4-9"><span class="toc-number">1.9.</span> <span class="toc-text">Thinking 4.9</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9A%BE%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">难点分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%A0%88%EF%BC%9F-Trapframe%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">异常处理栈？ Trapframe？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E6%9C%BA%E5%88%B6"><span class="toc-number">2.2.</span> <span class="toc-text">系统调用机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="toc-number">2.2.1.</span> <span class="toc-text">系统调用流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#msyscall-%E6%97%B6%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">2.2.2.</span> <span class="toc-text">msyscall 时发生了什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#syscall-%E4%B9%8B%E5%90%8E%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">2.2.3.</span> <span class="toc-text">syscall 之后发生了什么</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6IPC"><span class="toc-number">2.3.</span> <span class="toc-text">进程通信机制IPC</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E6%95%B4%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">文件整理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%80%81-user"><span class="toc-number">3.1.</span> <span class="toc-text">用户态 user</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#user-lib-syscall-wrap-S"><span class="toc-number">3.1.1.</span> <span class="toc-text">user&#x2F;lib&#x2F;syscall_wrap.S</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#user-lib-syscall-lib-c"><span class="toc-number">3.1.2.</span> <span class="toc-text">user&#x2F;lib&#x2F;syscall_lib.c</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#user-lib-ipc-c"><span class="toc-number">3.1.3.</span> <span class="toc-text">user&#x2F;lib.ipc.c</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#user-lib-fork-c"><span class="toc-number">3.1.4.</span> <span class="toc-text">user&#x2F;lib&#x2F;fork.c</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8-kern"><span class="toc-number">3.2.</span> <span class="toc-text">内核 kern</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#kern-tlbex-c"><span class="toc-number">3.2.1.</span> <span class="toc-text">kern&#x2F;tlbex.c</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E6%95%B4%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">函数整理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SAVE-ALL"><span class="toc-number">4.0.1.</span> <span class="toc-text">SAVE_ALL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#do-syscall"><span class="toc-number">4.0.2.</span> <span class="toc-text">do_syscall</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fork"><span class="toc-number">4.0.3.</span> <span class="toc-text">fork</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sys-mem-alloc"><span class="toc-number">4.0.4.</span> <span class="toc-text">sys_mem_alloc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#envid2env"><span class="toc-number">4.0.5.</span> <span class="toc-text">envid2env</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#duppage"><span class="toc-number">4.0.6.</span> <span class="toc-text">duppage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sys-mem-map"><span class="toc-number">4.0.7.</span> <span class="toc-text">sys_mem_map</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" title="OS_理论笔记">OS_理论笔记</a><time datetime="2024-08-06T07:38:04.000Z" title="Created 2024-08-06 15:38:04">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab6/" title="OS_lab6">OS_lab6</a><time datetime="2024-08-06T07:26:59.000Z" title="Created 2024-08-06 15:26:59">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab5/" title="OS_lab5">OS_lab5</a><time datetime="2024-08-06T07:26:52.000Z" title="Created 2024-08-06 15:26:52">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab4/" title="OS_lab4">OS_lab4</a><time datetime="2024-08-06T07:26:48.000Z" title="Created 2024-08-06 15:26:48">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab3/" title="OS_lab3">OS_lab3</a><time datetime="2024-08-06T07:26:45.000Z" title="Created 2024-08-06 15:26:45">2024-08-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OS_lab5 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="思考题Thinking 5.1  如果通过 kseg0 读写设备，那么对于设备的写入会缓存到 Cache 中。这是 一种错误的行为，在实际编写代码的时候这么做会引发不可预知的问题。请思考：这么做 这会引发什么问题？对于不同种类的设备（如我们提到的串口设备和IDE磁盘）的操作会 有差异吗？可以从缓存的性质和缓存更新的策略来考虑。   当外部设备产生中断信号或者更新数据时，此时Cache中之前旧的数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_lab5">
+<meta property="og:url" content="http://example.com/2024/08/06/OS-lab5/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="思考题Thinking 5.1  如果通过 kseg0 读写设备，那么对于设备的写入会缓存到 Cache 中。这是 一种错误的行为，在实际编写代码的时候这么做会引发不可预知的问题。请思考：这么做 这会引发什么问题？对于不同种类的设备（如我们提到的串口设备和IDE磁盘）的操作会 有差异吗？可以从缓存的性质和缓存更新的策略来考虑。   当外部设备产生中断信号或者更新数据时，此时Cache中之前旧的数据">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-08-06T07:26:52.000Z">
+<meta property="article:modified_time" content="2024-08-06T07:28:59.829Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/08/06/OS-lab5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OS_lab5',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-06 15:28:59'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OS_lab5</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-08-06T07:26:52.000Z" title="Created 2024-08-06 15:26:52">2024-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-06T07:28:59.829Z" title="Updated 2024-08-06 15:28:59">2024-08-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OS_lab5"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="Thinking-5-1"><a href="#Thinking-5-1" class="headerlink" title="Thinking 5.1"></a>Thinking 5.1</h2><blockquote>
+<p> 如果通过 kseg0 读写设备，那么对于设备的写入会缓存到 Cache 中。这是 一种错误的行为，在实际编写代码的时候这么做会引发不可预知的问题。请思考：这么做 这会引发什么问题？对于不同种类的设备（如我们提到的串口设备和IDE磁盘）的操作会 有差异吗？可以从缓存的性质和缓存更新的策略来考虑。</p>
+</blockquote>
+<ul>
+<li>当外部设备产生中断信号或者更新数据时，此时Cache中之前旧的数据可能刚完成缓存，那么完成缓存的这一部分无法完成更新，则会发生错误的行为。</li>
+<li>对于串口设备来说，读写频繁，信号多，在相同的时间内发生错误的概论远高于IDE磁盘。</li>
+</ul>
+<h2 id="Thinking-5-2"><a href="#Thinking-5-2" class="headerlink" title="Thinking 5.2"></a>Thinking 5.2</h2><blockquote>
+<p>查找代码中的相关定义，试回答一个磁盘块中最多能存储多少个文件控制块？一个目录下最多能有多少个文件？我们的文件系统支持的单个文件最大为多大？</p>
+</blockquote>
+<p>在user&#x2F;include&#x2F;fs.h中，有如下定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> BLOCK_SIZE PAGE_SIZE</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FILE_STRUCT_SIZE 256</span></span><br></pre></td></tr></table></figure>
+
+<p>从宏定义可以看出：磁盘块的大小和页大小一样，都是4KB；文件控制块的大小 FILE_STRUCT_SIZE 是256B；故&#x3D;&#x3D;⼀个磁盘块最多能存储 4K &#x2F; 256 &#x3D; 16  个⽂件控制块&#x3D;&#x3D;</p>
+<p>目录文件也是一种文件，会对应一个文件控制块，这一个文件控制块会占用一个磁盘块，那么作为目录的文件控制块最多拥有 BLOCK_SIZE &#x2F; 4 &#x3D; 1024个指向磁盘块的指针，也就是管理1024个磁盘的空间；而每个磁盘最多可以存储 16 个文件控制块，则&#x3D;&#x3D;一个目录最多可以容纳 1024 * 16 &#x3D; 16K个文件&#x3D;&#x3D;</p>
+<p>单个文件最大与上述分析同理，一个文件控制块最多管理1024个磁盘，如果全部用于存储文件内容的话，文件的大小为：1024 * BLOCK_SIZE &#x3D; 4M ，即&#x3D;&#x3D;单个文件最大为4M&#x3D;&#x3D;</p>
+<h2 id="Thinking-5-3"><a href="#Thinking-5-3" class="headerlink" title="Thinking 5.3"></a>Thinking 5.3</h2><blockquote>
+<p>请思考，在满足磁盘块缓存的设计的前提下，我们实验使用的内核支持的最大磁盘大小是多少？</p>
+</blockquote>
+<p>实验使用的内核将将 DISKMAP ~ DISKMAP+DISKMAX 这一段虚存地址空间作为缓冲区，缓冲区大小为DISKMAX，因此最⼤磁盘⼤⼩为 DISKMAX &#x3D; 0x40000000 ，即 &#x3D;&#x3D;1GB&#x3D;&#x3D; 。</p>
+<h2 id="Thinking-5-4"><a href="#Thinking-5-4" class="headerlink" title="Thinking 5.4"></a>Thinking 5.4</h2><blockquote>
+<p>在本实验中，fs&#x2F;serv.h、user&#x2F;include&#x2F;fs.h 等文件中出现了许多宏定义， 试列举你认为较为重要的宏定义，同时进行解释，并描述其主要应用之处。</p>
+</blockquote>
+<ul>
+<li><p><code>#define BLOCK_SIZE PAGE_SIZE</code></p>
+<p>磁盘块大小 4096B</p>
+</li>
+<li><p><code>#define NDIRECT 10</code></p>
+<p>直接索引磁盘块的数量 10</p>
+</li>
+<li><p><code>#define NINDIRECT (BLOCK_SIZE / 4)</code></p>
+<p>间接索引磁盘块的数量 1024</p>
+</li>
+<li><p><code>#define FILE_STRUCT_SIZE 256</code></p>
+<p>文件控制块大小 256</p>
+</li>
+<li><p><code>#define FILE2BLK (BLOCK_SIZE / sizeof(struct File))</code></p>
+</li>
+</ul>
+<h2 id="Thinking-5-5"><a href="#Thinking-5-5" class="headerlink" title="Thinking 5.5"></a>Thinking 5.5</h2><blockquote>
+<p>在Lab4“系统调用与fork”的实验中我们实现了极为重要的fork函数。那 么fork前后的父子进程是否会共享文件描述符和定位指针呢？请在完成上述练习的基础上 编写一个程序进行验证。</p>
+</blockquote>
+<p>会共享文件描述符和定位指针</p>
+<p>验证程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;lib.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">char</span> *msg = <span class="string">&quot;This is the NEW message of the day!\n\n&quot;</span>;</span><br><span class="line"><span class="type">static</span> <span class="type">char</span> *diff_msg = <span class="string">&quot;This is a different massage of the day!\n\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">umain</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> r;</span><br><span class="line">        <span class="type">int</span> fdnum;</span><br><span class="line">        <span class="type">char</span> buf[<span class="number">512</span>];</span><br><span class="line">        <span class="type">int</span> n;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ((r = open(<span class="string">&quot;/newmotd&quot;</span>, O_RDWR)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            user_panic(<span class="string">&quot;open /newmotd: %d&quot;</span>, r);</span><br><span class="line">        &#125;</span><br><span class="line">        fdnum = r;</span><br><span class="line">        writef(<span class="string">&quot;open is good\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ((n = read(fdnum, buf, <span class="number">511</span>)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            user_panic(<span class="string">&quot;read /newmotd: %d&quot;</span>, r);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">strcmp</span>(buf, diff_msg) != <span class="number">0</span>) &#123;</span><br><span class="line">            user_panic(<span class="string">&quot;read returned wrong data&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        writef(<span class="string">&quot;read is good\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> id;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ((id = fork()) == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((n = read(fdnum, buf, <span class="number">511</span>)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                user_panic(<span class="string">&quot;child read /newmotd: %d&quot;</span>, r);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">strcmp</span>(buf, diff_msg) != <span class="number">0</span>) &#123;</span><br><span class="line">                user_panic(<span class="string">&quot;child read returned wrong data&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            writef(<span class="string">&quot;child read is good &amp;&amp; child_fd == %d\n&quot;</span>,r);</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> *<span class="title">fdd</span>;</span></span><br><span class="line">            fd_lookup(r,&amp;fdd);</span><br><span class="line">            writef(<span class="string">&quot;child_fd&#x27;s offset == %d\n&quot;</span>,fdd-&gt;fd_offset);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span>((n = read(fdnum, buf, <span class="number">511</span>)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                user_panic(<span class="string">&quot;father read /newmotd: %d&quot;</span>, r);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="built_in">strcmp</span>(buf, diff_msg) != <span class="number">0</span>) &#123;</span><br><span class="line">                user_panic(<span class="string">&quot;father read returned wrong data&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            writef(<span class="string">&quot;father read is good &amp;&amp; father_fd == %d\n&quot;</span>,r);</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> *<span class="title">fdd</span>;</span></span><br><span class="line">            fd_lookup(r,&amp;fdd);</span><br><span class="line">            writef(<span class="string">&quot;father_fd&#x27;s offset == %d\n&quot;</span>,fdd-&gt;fd_offset);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">main.c: main is start ...</span><br><span class="line">init.c: mips_init() is called</span><br><span class="line">Physical memory: 65536K available, base = 65536K, extended = 0K</span><br><span class="line">to memory 80401000 for struct page directory.</span><br><span class="line">to memory 80431000 for struct Pages.</span><br><span class="line">pmap.c:  mips vm init success</span><br><span class="line">pageout:        @@@___0x7f3fe000___@@@  ins a page </span><br><span class="line">pageout:        @@@___0x40d000___@@@  ins a page </span><br><span class="line">FS is running</span><br><span class="line">FS can do I/O</span><br><span class="line">pageout:        @@@___0x7f3fe000___@@@  ins a page </span><br><span class="line">pageout:        @@@___0x407000___@@@  ins a page </span><br><span class="line">superblock is good</span><br><span class="line">diskno: 0</span><br><span class="line">diskno: 0</span><br><span class="line">read_bitmap is good</span><br><span class="line">diskno: 0</span><br><span class="line">alloc_block is good</span><br><span class="line">file_open is good</span><br><span class="line">file_get_block is good</span><br><span class="line">file_flush is good</span><br><span class="line">file_truncate is good</span><br><span class="line">diskno: 0</span><br><span class="line">file rewrite is good</span><br><span class="line">serve_open 00000400 ffff000 0x2</span><br><span class="line">open is good</span><br><span class="line">read is good</span><br><span class="line">father read is good &amp;&amp; father_fd == 0</span><br><span class="line">father_fd&#x27;s offset == 41</span><br><span class="line">[00000400] destroying 00000400</span><br><span class="line">[00000400] free env 00000400</span><br><span class="line">i am killed ... </span><br><span class="line">child read is good &amp;&amp; child_fd == 0</span><br><span class="line">child_fd&#x27;s offset == 41</span><br><span class="line">[00001402] destroying 00001402</span><br><span class="line">[00001402] free env 00001402</span><br><span class="line">i am killed ... </span><br></pre></td></tr></table></figure>
+
+<h2 id="Thinking-5-6"><a href="#Thinking-5-6" class="headerlink" title="Thinking 5.6"></a>Thinking 5.6</h2><blockquote>
+<p>请解释File,Fd,Filefd结构体及其各个域的作用。比如各个结构体会在哪些过程中被使用，是否对应磁盘上的物理实体还是单纯的内存数据等。说明形式自定，要求简洁明了，可大致勾勒出文件系统数据结构与物理实体的对应关系与设计框架。</p>
+</blockquote>
+<h3 id="File-文件"><a href="#File-文件" class="headerlink" title="File 文件"></a>File 文件</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user/include/fs.h 中</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">File</span> &#123;</span></span><br><span class="line">	<span class="type">char</span> f_name[MAXNAMELEN]; <span class="comment">// filename</span></span><br><span class="line">	<span class="type">uint32_t</span> f_size;	 <span class="comment">// file size in bytes</span></span><br><span class="line">	<span class="type">uint32_t</span> f_type;	 <span class="comment">// file type</span></span><br><span class="line">	<span class="type">uint32_t</span> f_direct[NDIRECT]; <span class="comment">// 用于存储指向存储文件内容的磁盘块的编号的数组</span></span><br><span class="line">	<span class="type">uint32_t</span> f_indirect; <span class="comment">// 指向存储 “存储指向存储文件内容的磁盘块的编号的数组” 的磁盘块的编号</span></span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">File</span> *<span class="title">f_dir</span>;</span> <span class="comment">// the pointer to the dir where this file is in, valid only in memory.</span></span><br><span class="line">	<span class="type">char</span> f_pad[FILE_STRUCT_SIZE - MAXNAMELEN - (<span class="number">3</span> + NDIRECT) * <span class="number">4</span> - <span class="keyword">sizeof</span>(<span class="type">void</span> *)]; <span class="comment">// 将结构体大小扩充到 FILE_STRUCT_SIZE</span></span><br><span class="line">&#125; __attribute__((aligned(<span class="number">4</span>), packed));</span><br></pre></td></tr></table></figure>
+
+<p>用处：作为文件控制块，记录的文件的信息</p>
+<p>对应了磁盘的物理实体</p>
+<h3 id="Fd-文件描述符"><a href="#Fd-文件描述符" class="headerlink" title="Fd 文件描述符"></a>Fd 文件描述符</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user/include/fd.h 中</span></span><br><span class="line"><span class="comment">// file descriptor</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> &#123;</span></span><br><span class="line">	u_int fd_dev_id; <span class="comment">//文件对应的设备</span></span><br><span class="line">	u_int fd_offset; <span class="comment">//文件读写的偏移量</span></span><br><span class="line">	u_int fd_omode; <span class="comment">//文件读写的模式</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>用处：用于存储文件的基本信息和用户进程中关于文件的状态</p>
+<p>不对应物理实体，是单纯的内存数据</p>
+<h3 id="FileFd-文件-描述符"><a href="#FileFd-文件-描述符" class="headerlink" title="FileFd 文件+描述符"></a>FileFd 文件+描述符</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file descriptor + file</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Filefd</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> <span class="title">f_fd</span>;</span> <span class="comment">// 文件描述符fd</span></span><br><span class="line">	u_int f_fileid; <span class="comment">// 文件id</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">File</span> <span class="title">f_file</span>;</span> <span class="comment">// 文件File</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>对应了磁盘的物理实体，也包含内存数据</p>
+<h2 id="Thinking-5-7"><a href="#Thinking-5-7" class="headerlink" title="Thinking 5.7"></a>Thinking 5.7</h2><blockquote>
+<p>图 5.9 中有多种不同形式的箭头，请解释这些不同箭头的差别，并思考我们的操作系统是如何实现对应类型的进程间通信的。</p>
+<p>![image-20240528212533809](C:\Users\86199\Documents\A blog\myblog\source_posts\image-20240528212533809.png)</p>
+</blockquote>
+<p>起点为圆点的实线箭头表示进程创建；起点没有点的实线箭头表示用户进程向文件系统服务进程发送信息，虚线箭头表示文件服务进程向用户进程发送信息</p>
+<ul>
+<li>ENV_CREATE(user_env)和ENV_CREATE(fs_serv)都是异步消息，由init()发出创建消息后，init()函数即可返回执行后续步骤，由fs和user线程执行自己的初始化工作。</li>
+<li>fs线程初始化serv_init()和fs_init()完成后，进入serv()函数，被ipc_receive()阻塞为ENV_NOT_RUNNABLE，直到收到User线程的ipc_send(fsreq)被唤醒。</li>
+<li>User线程向fs线程ipc_send(fsreq)发送请求为同步消息，发送后自身进入阻塞ENV_NOT_RUNNABLE等待被唤醒的fs线程服务结束时ipc_send(dst_va),用户线程接收到数据后继续运行，此后fs线程进入阻塞，等待下次被用户唤醒。</li>
+</ul>
+<h1 id="实验难点"><a href="#实验难点" class="headerlink" title="实验难点"></a>实验难点</h1><h2 id="磁盘空间"><a href="#磁盘空间" class="headerlink" title="磁盘空间"></a>磁盘空间</h2><p>![image-20240516120636111](C:\Users\86199\Documents\A blog\myblog\source_posts\image-20240516120636111.png)</p>
+<h1 id="结构整理"><a href="#结构整理" class="headerlink" title="结构整理"></a>结构整理</h1><p>File相关见上方思考题</p>
+<h3 id="Open"><a href="#Open" class="headerlink" title="Open"></a>Open</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// user/fs/serv.c</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Open</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">File</span> *<span class="title">o_file</span>;</span>    <span class="comment">// mapped descriptor for open file</span></span><br><span class="line">    u_int o_fileid;         <span class="comment">// file id</span></span><br><span class="line">    <span class="type">int</span> o_mode;             <span class="comment">// open mode</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">Filefd</span> *<span class="title">o_ff</span>;</span>    <span class="comment">// va of filefd page</span></span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="实验心得"><a href="#实验心得" class="headerlink" title="实验心得"></a>实验心得</h1><p>虽然课下实现的代码量减小了，但是要理解整个文件系统要阅读的代码量真的很大 x</p>
+<p>磁盘的引入也让我重新审视了自己对内存空间的理解，文件系统服务进程和用户进程之间的ipc通信也让我更加深入的理解了ipc的机制</p>
+<p>爆夸指导书绘图，拯救了我糊糊的层次结构理解</p>
+<p>不过如果能对课下以外的代码多加入一些讲解就好了</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/08/06/OS-lab5/">http://example.com/2024/08/06/OS-lab5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/08/06/OS-lab6/" title="OS_lab6"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">OS_lab6</div></div></a></div><div class="next-post pull-right"><a href="/2024/08/06/OS-lab4/" title="OS_lab4"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">OS_lab4</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-5-1"><span class="toc-number">1.1.</span> <span class="toc-text">Thinking 5.1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-5-2"><span class="toc-number">1.2.</span> <span class="toc-text">Thinking 5.2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-5-3"><span class="toc-number">1.3.</span> <span class="toc-text">Thinking 5.3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-5-4"><span class="toc-number">1.4.</span> <span class="toc-text">Thinking 5.4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-5-5"><span class="toc-number">1.5.</span> <span class="toc-text">Thinking 5.5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-5-6"><span class="toc-number">1.6.</span> <span class="toc-text">Thinking 5.6</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#File-%E6%96%87%E4%BB%B6"><span class="toc-number">1.6.1.</span> <span class="toc-text">File 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fd-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-number">1.6.2.</span> <span class="toc-text">Fd 文件描述符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileFd-%E6%96%87%E4%BB%B6-%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-number">1.6.3.</span> <span class="toc-text">FileFd 文件+描述符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Thinking-5-7"><span class="toc-number">1.7.</span> <span class="toc-text">Thinking 5.7</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E9%9A%BE%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">实验难点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4"><span class="toc-number">2.1.</span> <span class="toc-text">磁盘空间</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E6%95%B4%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">结构整理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Open"><span class="toc-number">3.0.1.</span> <span class="toc-text">Open</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%BF%83%E5%BE%97"><span class="toc-number">4.</span> <span class="toc-text">实验心得</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" title="OS_理论笔记">OS_理论笔记</a><time datetime="2024-08-06T07:38:04.000Z" title="Created 2024-08-06 15:38:04">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab6/" title="OS_lab6">OS_lab6</a><time datetime="2024-08-06T07:26:59.000Z" title="Created 2024-08-06 15:26:59">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab5/" title="OS_lab5">OS_lab5</a><time datetime="2024-08-06T07:26:52.000Z" title="Created 2024-08-06 15:26:52">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab4/" title="OS_lab4">OS_lab4</a><time datetime="2024-08-06T07:26:48.000Z" title="Created 2024-08-06 15:26:48">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab3/" title="OS_lab3">OS_lab3</a><time datetime="2024-08-06T07:26:45.000Z" title="Created 2024-08-06 15:26:45">2024-08-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

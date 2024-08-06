@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OS_lab0 | Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Lab0 思考题Thinking 0.1 cat Untracked.txt 和 cat Stage.txt的两次运行结果的不同：前者是未跟踪Untracked files,后者是要提交（暂存）Changes to be commited  README.txt位置的不同：Untracked.txt处在未跟踪状态，add之后处于暂存状态    cat Modified.txt：结果与第一次执行ad">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_lab0">
+<meta property="og:url" content="http://example.com/2024/08/06/OS-lab0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Lab0 思考题Thinking 0.1 cat Untracked.txt 和 cat Stage.txt的两次运行结果的不同：前者是未跟踪Untracked files,后者是要提交（暂存）Changes to be commited  README.txt位置的不同：Untracked.txt处在未跟踪状态，add之后处于暂存状态    cat Modified.txt：结果与第一次执行ad">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2024-08-06T07:26:32.000Z">
+<meta property="article:modified_time" content="2024-08-06T07:28:20.470Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/08/06/OS-lab0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OS_lab0',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-06 15:28:20'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">OS_lab0</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-08-06T07:26:32.000Z" title="Created 2024-08-06 15:26:32">2024-08-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-08-06T07:28:20.470Z" title="Updated 2024-08-06 15:28:20">2024-08-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="OS_lab0"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Lab0-思考题"><a href="#Lab0-思考题" class="headerlink" title="Lab0 思考题"></a>Lab0 思考题</h1><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><ul>
+<li><p><code>cat Untracked.txt</code> 和 <code>cat Stage.txt</code>的两次运行结果的不同：前者是未跟踪<code>Untracked files</code>,后者是要提交（暂存）<code>Changes to be commited</code></p>
+</li>
+<li><p>README.txt位置的不同：Untracked.txt处在未跟踪状态，add之后处于暂存状态</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311145424935.png" alt="image-20240311145424935" style="zoom: 50%;" /> 
+</li>
+<li><p><code>cat Modified.txt</code>：结果与第一次执行add命令之前的status不一样。原因：README.txt现在是已经跟踪的状态，所以不会变成第一次add前的未跟踪状态；但是该文件经过了修改，也没有经过暂存和提交，现在正处于被修改状态，也就是 “尚未暂存以备提交的变更”</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311145913170.png" alt="image-20240311145913170" style="zoom:50%;" /></li>
+</ul>
+<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><ul>
+<li><code>add the file</code>：<code>git add &lt;filename&gt;</code></li>
+<li><code>stage the file</code>：<code>git add &lt;filename&gt;</code></li>
+<li><code>commit</code>：<code>git commit &lt;filename&gt; -m &lt;message&gt;</code></li>
+</ul>
+<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><blockquote>
+<p>1 代码文件 print.c 被错误删除时，应当使用什么命令将其恢复？ </p>
+</blockquote>
+<p>删除了工作区的print.c文件，但是版本库里的还在；</p>
+<p><code>git checkout --print.c</code> 可以用版本库里的版本替换工作区里的版本，实现删除的恢复。</p>
+<blockquote>
+<p>2 代码文件 print.c 被错误删除后，执行了 <code>git rm print.c</code> 命令，此时应当使用什么命令将其恢复？</p>
+</blockquote>
+<p>删除了工作区的文件，然后用<code>git rm print.c</code>将删除放入了暂存区，但是还没有<code>git commit</code>，也就是说版本库中的文件没有删除，因此仍然可以用<code>git checkout --print.c</code>来恢复</p>
+<blockquote>
+<p>3 无关文件 hello.txt 已经被添加到暂存区时，如何在不删除此文件的前提下将其移出暂存区</p>
+</blockquote>
+<p><code>git rm --cached hello.txt</code> 和<code>git reset HEAD --hello.txt</code>都可以在不删除文件的前提下将文件移出暂存区</p>
+<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><ul>
+<li><p><code>git log </code>结果：提交说明为3的哈希值为<code>commit8230cd2cd5da14dcbd1490effe626c393c8b0610</code></p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311192747421.png" alt="image-20240311192747421" style="zoom:50%;" /> 
+</li>
+<li><p>版本回退后变成下图，变化：提交3消失了</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311192804355.png" alt="image-20240311192804355" style="zoom:50%;" /> 
+</li>
+<li><p>执行<code>git reset --hard 40566667ae9ba9d28bfe69bcdc983be6313a8711</code>后，回到版本1</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311193252152.png" alt="image-20240311193252152" style="zoom:50%;" /> 
+</li>
+<li><p>回到最新版本</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311193445985.png" alt="image-20240311193445985" style="zoom:50%;" /></li>
+</ul>
+<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><p>在标准输出输出了<code>first</code>、output.txt中为两行，第一行是<code>third</code>第二行是<code>forth</code></p>
+<p>（因为&gt;是覆盖，而&gt;&gt;是追加，third把second给覆盖掉了）</p>
+<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><ul>
+<li><p>command文件：创建test文件，把<code>echo &#39; &#39; &gt;&gt; test </code>中间的部分输出到test文件内部。当涉及到参数传递 $ or 重定向 &gt; 时，用单引号<code>&#39;&#39;</code>把要打印的内容括起来，避免歧义。</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311230435453.png" alt="image-20240311230435453" style="zoom:50%;" /> 
+</li>
+<li><p>test文件内部：echo后面是打印到result的语句，test实现了a&#x3D;1，b&#x3D;2并计算了c&#x3D;a+b的结果，将cba分别存储在file123后合并至file4，再将file4内容追加到result文件结尾</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311224600442.png" alt="image-20240311224600442" style="zoom:50%;" align="left"/>
+</li>
+<li><p>result文件内部：前10行是test打印的内容，后3行是从file4复制的内容</p>
+<img src="C:\Users\86199\Documents\A blog\myblog\source\_posts\image-20240311224831829.png" alt="image-20240311224831829" style="zoom:50%;" align="left"/>
+</li>
+<li><p>echo echo Shell Start和echo ‘echo Shell Start’(这里想打反引号但是typora会换成代码行了QAQ)，效果有区别，前者输出echo Shell Start，后者输出Shell Start。原因：反引号相当于echo $(echo Shell Start)，会将括号内部的echo Shell Start的输出Shell Start，替换至原处，导致语句等同于echo Shell Start。</p>
+</li>
+<li><p>有区别，前者在test文件里输出echo，后者在test文件中输出为空</p>
+</li>
+</ul>
+<h1 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h1><h3 id="1-Bash-Shell-语法"><a href="#1-Bash-Shell-语法" class="headerlink" title="1.Bash Shell 语法"></a>1.Bash Shell 语法</h3><p>对bash shell语法使用不熟练，例如变量的使用在该用{}时没有加，等等，导致程序错误</p>
+<h3 id="2-不熟悉实验系统和常用报错"><a href="#2-不熟悉实验系统和常用报错" class="headerlink" title="2.不熟悉实验系统和常用报错"></a>2.不熟悉实验系统和常用报错</h3><p>导致出现错误定位很慢，甚至没有办法定位到错误。</p>
+<h3 id="3-对指导书里面涉及的内容没有充分理解和准备"><a href="#3-对指导书里面涉及的内容没有充分理解和准备" class="headerlink" title="3.对指导书里面涉及的内容没有充分理解和准备"></a>3.对指导书里面涉及的内容没有充分理解和准备</h3><p>chmod在课下没有看懂但是也没有去查资料找，导致课上仍然不会使用chmod</p>
+<h1 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h1><p>这次实验做的非常不好，结束之后很难过，也很迷茫，进行了深刻的反思</p>
+<p>最后还是觉得是因为准备不够充分，没有提前看学长博客等等，把可能会考到的都准备好，可能会用到的都练习熟练，导致这次上机炸掉了</p>
+<p>体会的话，就是之后得多花时间做充分准备了，不要存侥幸心理觉得自己已经会了</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">John Doe</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/08/06/OS-lab0/">http://example.com/2024/08/06/OS-lab0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/08/06/OS-lab1/" title="OS_lab1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Previous</div><div class="prev_info">OS_lab1</div></div></a></div><div class="next-post pull-right"><a href="/2024/08/06/test/" title="test"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">test</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lab0-%E6%80%9D%E8%80%83%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">Lab0 思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-0-1"><span class="toc-number">1.0.1.</span> <span class="toc-text">Thinking 0.1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-0-2"><span class="toc-number">1.0.2.</span> <span class="toc-text">Thinking 0.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-0-3"><span class="toc-number">1.0.3.</span> <span class="toc-text">Thinking 0.3</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-0-4"><span class="toc-number">1.0.4.</span> <span class="toc-text">Thinking 0.4</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-0-5"><span class="toc-number">1.0.5.</span> <span class="toc-text">Thinking 0.5</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Thinking-0-6"><span class="toc-number">1.0.6.</span> <span class="toc-text">Thinking 0.6</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9A%BE%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">难点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Bash-Shell-%E8%AF%AD%E6%B3%95"><span class="toc-number">2.0.1.</span> <span class="toc-text">1.Bash Shell 语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%8D%E7%86%9F%E6%82%89%E5%AE%9E%E9%AA%8C%E7%B3%BB%E7%BB%9F%E5%92%8C%E5%B8%B8%E7%94%A8%E6%8A%A5%E9%94%99"><span class="toc-number">2.0.2.</span> <span class="toc-text">2.不熟悉实验系统和常用报错</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AF%B9%E6%8C%87%E5%AF%BC%E4%B9%A6%E9%87%8C%E9%9D%A2%E6%B6%89%E5%8F%8A%E7%9A%84%E5%86%85%E5%AE%B9%E6%B2%A1%E6%9C%89%E5%85%85%E5%88%86%E7%90%86%E8%A7%A3%E5%92%8C%E5%87%86%E5%A4%87"><span class="toc-number">2.0.3.</span> <span class="toc-text">3.对指导书里面涉及的内容没有充分理解和准备</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E4%BD%93%E4%BC%9A"><span class="toc-number">3.</span> <span class="toc-text">实验体会</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" title="OS_理论笔记">OS_理论笔记</a><time datetime="2024-08-06T07:38:04.000Z" title="Created 2024-08-06 15:38:04">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab6/" title="OS_lab6">OS_lab6</a><time datetime="2024-08-06T07:26:59.000Z" title="Created 2024-08-06 15:26:59">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab5/" title="OS_lab5">OS_lab5</a><time datetime="2024-08-06T07:26:52.000Z" title="Created 2024-08-06 15:26:52">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab4/" title="OS_lab4">OS_lab4</a><time datetime="2024-08-06T07:26:48.000Z" title="Created 2024-08-06 15:26:48">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab3/" title="OS_lab3">OS_lab3</a><time datetime="2024-08-06T07:26:45.000Z" title="Created 2024-08-06 15:26:45">2024-08-06</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

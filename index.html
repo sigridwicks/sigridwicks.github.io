@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Hexo</title><meta name="author" content="John Doe"><meta name="copyright" content="John Doe"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Error',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Hexo',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-08-06 15:52:11'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr class="custom-hr"/></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="Hexo"><span class="site-name">Hexo</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">Hexo</h1></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" title="OS_理论笔记">OS_理论笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:38:04.000Z" title="Created 2024-08-06 15:38:04">2024-08-06</time></span></div><div class="content">第一章一、什么是操作系统Q：HelloWorld 从代码到显示到屏幕，经过了哪些os过程？
+
+编译成可执行文件、用户告诉shell执行该可执行文件、
+
+计算机体系中的接口
+UI：
+
+API：源代码和第三方库的接口
+
+ABI（Application Binary Interface）为应用程序二进制接口
+
+如果链接器可以将 MSVC 编译出来的目标文件和 GCC 编译出来的目标文件链接到一起，那么链接器首先需要支持 MSVC 编译生成的目标文件的格式 PE&#x2F;COFF 和 GCC 的 ELF 格式。
+此外，不同格式的目标文件需要拥有相同的符号修饰标准、变量内存分布方式、函数调用方式等等。其中目标文件格式、符号修饰标准、变量内存分布方式、函数调用方式等这些跟二进制可执行代码兼容性相关的内容称为 ABI
+
+
+ISA：
+
+
+二、操作系统的作用
+用户与计算机硬件系统之间的接口（API&#x2F;GUI）
+系统资源管理者（处理机、存储器、IO设备等）
+处理器管理：
+存储器管理：内存的分配和回收
+IO的管理：
+
+
+实现对计算机资源的抽象
+
+三、操作系统的发展1、批处理系统
+联机批处理系统：I ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-lab6/" title="OS_lab6">OS_lab6</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:26:59.000Z" title="Created 2024-08-06 15:26:59">2024-08-06</time></span></div><div class="content"></div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-lab5/" title="OS_lab5">OS_lab5</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:26:52.000Z" title="Created 2024-08-06 15:26:52">2024-08-06</time></span></div><div class="content">思考题Thinking 5.1
+ 如果通过 kseg0 读写设备，那么对于设备的写入会缓存到 Cache 中。这是 一种错误的行为，在实际编写代码的时候这么做会引发不可预知的问题。请思考：这么做 这会引发什么问题？对于不同种类的设备（如我们提到的串口设备和IDE磁盘）的操作会 有差异吗？可以从缓存的性质和缓存更新的策略来考虑。
+
+
+当外部设备产生中断信号或者更新数据时，此时Cache中之前旧的数据可能刚完成缓存，那么完成缓存的这一部分无法完成更新，则会发生错误的行为。
+对于串口设备来说，读写频繁，信号多，在相同的时间内发生错误的概论远高于IDE磁盘。
+
+Thinking 5.2
+查找代码中的相关定义，试回答一个磁盘块中最多能存储多少个文件控制块？一个目录下最多能有多少个文件？我们的文件系统支持的单个文件最大为多大？
+
+在user&#x2F;include&#x2F;fs.h中，有如下定义
+12#define BLOCK_SIZE PAGE_SIZE#define FILE_STRUCT_SIZE 256
+
+从宏定义可以看出：磁盘块的大小和页大小一样，都是4KB；文件控制块的大小 FIL ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-lab4/" title="OS_lab4">OS_lab4</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:26:48.000Z" title="Created 2024-08-06 15:26:48">2024-08-06</time></span></div><div class="content">思考题Thinking 4.1思考并回答下面的问题： 
+
+内核在保存现场的时候是如何避免破坏通用寄存器的？
+
+内核通过在kern&#x2F;entry.S中调用SAVE_ALL来保存现场，SAVE_ALL的实现在include&#x2F;stackframe.h中，具体实现如下
+1234567891011121314151617181920212223242526272829303132333435.macro SAVE_ALL.set noat.set noreorder	mfc0    k0, CP0_STATUS	andi    k0, STATUS_UM	beqz    k0, 1f	move    k0, sp //将用户栈指针存入k0	li      sp, KSTACKTOP //sp指向内核处理栈1:	subu    sp, sp, TF_SIZE // 处理栈指针下压TF_SIZE	sw      k0, TF_REG29(sp) // 将用户栈指针存入内核栈TF_REG29处	// 借助k0将CP0寄存器和HI、LO寄存器存入内核栈	mfc0    k0, CP0_ ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-lab3/" title="OS_lab3">OS_lab3</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:26:45.000Z" title="Created 2024-08-06 15:26:45">2024-08-06</time></span></div><div class="content">Thinking 3.1
+ 请结合 MOS 中的页目录自映射应用解释代码中 e-&gt;env_pgdir[PDX(UVPT)] &#x3D; PADDR(e-&gt;env_pgdir) | PTE_V 的含义。 
+
+UVPT是用户页表的起始地址，PDX(UVPT)取了虚拟地址UVPT的高十位，作为页目录偏移量；e-&gt;env_pgdir是该进程的页目录基地址（位于 kseg0 的虚拟地址），因此e-&gt;env_pgdir[PDX(UVPT)] 代表页目录的第PDX(UVPT)个页目录项
+PADDR(e-&gt;env_pgdir)是页目录的物理地址，PTE_V是页表项的有效位
+因此这句代码的含义是：把进程页目录的物理地址存在页目录的第PDX(UVPT)个页目录项中，并把有效位置1
+进一步，根据自映射的知识我们知道，自映射页目录项$PDE_{self-mapping}$相对于页目录基地址的偏移是$PT_{base}&gt;&gt;22$，也就是这里的PDX(UVPT)
+因此，这里实现了页目录的自映射，即让自映射页目录项存储了页目录的物理地址。
+Thinking 3.2
+elf ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-lab2/" title="OS_lab2">OS_lab2</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:26:40.000Z" title="Created 2024-08-06 15:26:40">2024-08-06</time></span></div><div class="content">思考题Thinking 2.1
+根据上述说明，回答问题：在编写的 C 程序中，指针变量中存储的地址 被视为虚拟地址，还是物理地址？MIPS 汇编程序中 lw 和 sw 指令使用的地址被视为虚拟 地址，还是物理地址？ 
+
+在编写的 C 程序中，指针变量中存储的地址 被视为虚拟地址。
+MIPS 汇编程序中 lw 和 sw 指令使用的地址被视为虚拟地址。
+Thinking 2.2
+从可重用性的角度，阐述用宏来实现链表的好处
+
+​	指导书中提到：“C++ 中可以使用 std::stack 定义一个类型为 T 的栈，Java 中可以使用 HashMap 定义一个键类型为 K 且值类型为 V 的哈希表。这种模式称为泛型，C 语言并没有泛型的语法，因 此需要通过宏另辟蹊径来实现泛型。”
+​	我认为用宏来实现链表的好处主要是：实现泛型。宏定义实现链表，用参数type来表示结构体类型，这样就可以针对不同的数据结构使用同样的链表代码，可重用性更高。
+​	除此之外，field的设计也十分巧妙，利用&#x3D;&#x3D;字符串字面量的替换&#x3D;&#x3D;，使得其能代表所有结构结构体的所有成员变量，提 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-lab1/" title="OS_lab1">OS_lab1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:26:36.000Z" title="Created 2024-08-06 15:26:36">2024-08-06</time></span></div><div class="content">思考题Thinking 1.1
+请阅读 附录中的编译链接详解，尝试分别使用实验环境中的原生 x86 工具 链（gcc、ld、readelf、objdump 等）和 MIPS 交叉编译工具链（带有 mips-linux-gnu前缀），重复其中的编译和解析过程，观察相应的结果，并解释其中向 objdump 传入的参数 的含义。
+
+使用x86工具链命令行代码如下
+12345678910touch hello.cvim hello.cgcc -E hello.c -o hello.ivim hello.igcc -c hello.c -o hello.oobjdump -DS hello.o &gt; re1vim re1gcc hello.c -o helloobjdump -DS hello &gt; re2vim re2
+
+只进行预处理gcc -E hello.c -o hello.i，结果如下（截取hello.i中部分内容）
+
+
+生成hello.o并进行反汇编之后的文件如下：
+
+
+直接编译成可执行文件hello后，进行反汇编结果如下（截取main部分）：
+
+
+使用MIPS交叉编译工具链 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/OS-lab0/" title="OS_lab0">OS_lab0</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:26:32.000Z" title="Created 2024-08-06 15:26:32">2024-08-06</time></span></div><div class="content">Lab0 思考题Thinking 0.1
+cat Untracked.txt 和 cat Stage.txt的两次运行结果的不同：前者是未跟踪Untracked files,后者是要提交（暂存）Changes to be commited
+
+README.txt位置的不同：Untracked.txt处在未跟踪状态，add之后处于暂存状态
+ 
+
+cat Modified.txt：结果与第一次执行add命令之前的status不一样。原因：README.txt现在是已经跟踪的状态，所以不会变成第一次add前的未跟踪状态；但是该文件经过了修改，也没有经过暂存和提交，现在正处于被修改状态，也就是 “尚未暂存以备提交的变更”
+
+
+Thinking 0.2
+add the file：git add &lt;filename&gt;
+stage the file：git add &lt;filename&gt;
+commit：git commit &lt;filename&gt; -m &lt;message&gt;
+
+Thinking 0.3
+1 代码文件 print.c 被错误删除时，应当使用什么 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/test/" title="test">test</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T07:25:21.000Z" title="Created 2024-08-06 15:25:21">2024-08-06</time></span></div><div class="content"></div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/08/06/hello-world/" title="Hello World">Hello World</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">Created</span><time datetime="2024-08-06T06:51:54.695Z" title="Created 2024-08-06 14:51:54">2024-08-06</time></span></div><div class="content">Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
+Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;
+
+More info: Writing
+Run server1$ hexo server
+
+More info: Server
+Generate static files1$ hexo generate
+
+More info: Generating
+Deploy to remote sites1$ hexo deploy
+
+More info: Deployment
+</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">John Doe</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-%E7%90%86%E8%AE%BA%E7%AC%94%E8%AE%B0/" title="OS_理论笔记">OS_理论笔记</a><time datetime="2024-08-06T07:38:04.000Z" title="Created 2024-08-06 15:38:04">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab6/" title="OS_lab6">OS_lab6</a><time datetime="2024-08-06T07:26:59.000Z" title="Created 2024-08-06 15:26:59">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab5/" title="OS_lab5">OS_lab5</a><time datetime="2024-08-06T07:26:52.000Z" title="Created 2024-08-06 15:26:52">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab4/" title="OS_lab4">OS_lab4</a><time datetime="2024-08-06T07:26:48.000Z" title="Created 2024-08-06 15:26:48">2024-08-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/06/OS-lab3/" title="OS_lab3">OS_lab3</a><time datetime="2024-08-06T07:26:45.000Z" title="Created 2024-08-06 15:26:45">2024-08-06</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>Archives</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">August 2024</span><span class="card-archive-list-count">10</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>Info</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">Article :</div><div class="item-count">10</div></div><div class="webinfo-item"><div class="item-name">UV :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">PV :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">Last Update :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-08-06T07:52:11.550Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By John Doe</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
